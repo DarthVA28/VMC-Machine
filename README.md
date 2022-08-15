@@ -1,8 +1,6 @@
 # **README** 
 ## **Overview**
-In the previous assignment, we designed a compiler to convert programs written in the WHILE Programmign Language to Abstract Syntax Trees (ASTs).
-
-In this assignment, we design a **VMC Machine**, which is a virtual machine with a value stack **V**, a memory **M** and a control stack **C**. For the execution of the AST, we first convert it into a bracket-free postfix expression, and then operate on it using the operational semantics as defined in a later section. The evaluation is considered complete when the control stack is empty (Note that if the program does not terminate this situation will not arise).
+We design a **VMC Machine**, which is a virtual machine with a value stack **V**, a memory **M** and a control stack **C**. For the execution of the AST developed by the compiler, we first convert it into a bracket-free postfix expression, and then operate on it using the operational semantics as defined in a later section. The evaluation is considered complete when the control stack is empty (Note that if the program does not terminate this situation will not arise).
 
 The files as a part of this submission are: 
 - vmc_machine.sml (Implementation of the VMC Machine)
@@ -93,7 +91,7 @@ Rule
 
 ## **Design and Implementation Decisions**
 ### **Type Checking**
-Type checking, which was excluded in the implementation for Assignment 3, has been implemented for both expressions and identifiers. The implementation uses the inbuilt structure "HashTable" from SMJ/NJ. An expression/identifier having incorrect type raises an error ```TypeMismatchException```. 
+Type checking has been implemented for both expressions and identifiers. The implementation uses the inbuilt structure "HashTable" from SMJ/NJ. An expression/identifier having incorrect type raises an error ```TypeMismatchException```. 
 
 Further, we also check for declaration before use using the same symbol table - if any identifier has not been declared in the header of the program, we raise an error- 
 > "ERROR: Identifier not declared before use."
@@ -114,7 +112,7 @@ We have modified the name of the function ```ToString()``` of the VMC Machine to
 The new choice of the name is because it is essentially outputting the current configuration of the VMC Machine.
 
 ## **Acknowledgements**
-I referred to the following sources for the completion of this assignment: 
+I referred to the following sources for the completion of this peoject: 
 - [Modern Compiler Design in Standard ML](https://www.cs.princeton.edu/~appel/modern/ml/) - Andrew W. Appel
 - [SML/NJ Official Documentation](https://www.smlnj.org/doc/smlnj-lib/Util/str-HashTable.html)
 - [COL226 Hyper Notes](https://www.cse.iitd.ac.in/~sak/courses/pl/pl.pdf), Section 4.6 (WHILE Language EBNF)
