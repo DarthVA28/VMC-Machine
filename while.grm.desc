@@ -1,0 +1,1805 @@
+
+state 0:
+
+	tree : . pgm 
+
+	PROGRAM	shift 2
+
+	tree	goto 86
+	pgm	goto 1
+
+	.	error
+
+
+state 1:
+
+	tree : pgm .  (reduce by rule 0)
+
+	EOF	reduce by rule 0
+
+
+	.	error
+
+
+state 2:
+
+	pgm : PROGRAM . ID DCOLON block 
+
+	ID	shift 3
+
+
+	.	error
+
+
+state 3:
+
+	pgm : PROGRAM ID . DCOLON block 
+
+	DCOLON	shift 4
+
+
+	.	error
+
+
+state 4:
+
+	pgm : PROGRAM ID DCOLON . block 
+
+	CLPAREN	reduce by rule 4
+	V	shift 8
+
+	block	goto 7
+	ds	goto 6
+	d	goto 5
+
+	.	error
+
+
+state 5:
+
+	ds : d . ds 
+
+	CLPAREN	reduce by rule 4
+	V	shift 8
+
+	ds	goto 9
+	d	goto 5
+
+	.	error
+
+
+state 6:
+
+	block : ds . cs 
+
+	CLPAREN	shift 11
+
+	cs	goto 10
+
+	.	error
+
+
+state 7:
+
+	pgm : PROGRAM ID DCOLON block .  (reduce by rule 1)
+
+	EOF	reduce by rule 1
+
+
+	.	error
+
+
+state 8:
+
+	d : V . vl COLON t SEMICOLON 
+
+	ID	shift 14
+
+	vl	goto 13
+	v	goto 12
+
+	.	error
+
+
+state 9:
+
+	ds : d ds .  (reduce by rule 3)
+
+	CLPAREN	reduce by rule 3
+
+
+	.	error
+
+
+state 10:
+
+	block : ds cs .  (reduce by rule 2)
+
+	EOF	reduce by rule 2
+
+
+	.	error
+
+
+state 11:
+
+	cs : CLPAREN . csh CRPAREN 
+
+	ID	shift 21
+	CRPAREN	reduce by rule 12
+	READ	shift 20
+	WRITE	shift 19
+	IF	shift 18
+	WHILE	shift 17
+
+	c	goto 16
+	csh	goto 15
+
+	.	error
+
+
+state 12:
+
+	vl : v . COMMA vl 
+	vl : v .  (reduce by rule 9)
+
+	COMMA	shift 22
+	COLON	reduce by rule 9
+
+
+	.	error
+
+
+state 13:
+
+	d : V vl . COLON t SEMICOLON 
+
+	COLON	shift 23
+
+
+	.	error
+
+
+state 14:
+
+	v : ID .  (reduce by rule 38)
+
+	COMMA	reduce by rule 38
+	COLON	reduce by rule 38
+	SEMICOLON	reduce by rule 38
+	RPAREN	reduce by rule 38
+	PLUS	reduce by rule 38
+	SUB	reduce by rule 38
+	TIMES	reduce by rule 38
+	DIV	reduce by rule 38
+	MOD	reduce by rule 38
+	EQ	reduce by rule 38
+	NE	reduce by rule 38
+	LT	reduce by rule 38
+	LE	reduce by rule 38
+	GT	reduce by rule 38
+	GE	reduce by rule 38
+	AND	reduce by rule 38
+	OR	reduce by rule 38
+	THEN	reduce by rule 38
+	DO	reduce by rule 38
+
+
+	.	error
+
+
+state 15:
+
+	cs : CLPAREN csh . CRPAREN 
+
+	CRPAREN	shift 24
+
+
+	.	error
+
+
+state 16:
+
+	csh : c . SEMICOLON csh 
+
+	SEMICOLON	shift 25
+
+
+	.	error
+
+
+state 17:
+
+	c : WHILE . e DO cs ENDWH 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 27
+	num	goto 26
+
+	.	error
+
+
+state 18:
+
+	c : IF . e THEN cs ELSE cs ENDIF 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 36
+	num	goto 26
+
+	.	error
+
+
+state 19:
+
+	c : WRITE . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 37
+	num	goto 26
+
+	.	error
+
+
+state 20:
+
+	c : READ . ID 
+
+	ID	shift 38
+
+
+	.	error
+
+
+state 21:
+
+	c : ID . ASSIGN e 
+
+	ASSIGN	shift 39
+
+
+	.	error
+
+
+state 22:
+
+	vl : v COMMA . vl 
+
+	ID	shift 14
+
+	vl	goto 40
+	v	goto 12
+
+	.	error
+
+
+state 23:
+
+	d : V vl COLON . t SEMICOLON 
+
+	INT	shift 43
+	BOOL	shift 42
+
+	t	goto 41
+
+	.	error
+
+
+state 24:
+
+	cs : CLPAREN csh CRPAREN .  (reduce by rule 10)
+
+	EOF	reduce by rule 10
+	ELSE	reduce by rule 10
+	ENDIF	reduce by rule 10
+	ENDWH	reduce by rule 10
+
+
+	.	error
+
+
+state 25:
+
+	csh : c SEMICOLON . csh 
+
+	ID	shift 21
+	CRPAREN	reduce by rule 12
+	READ	shift 20
+	WRITE	shift 19
+	IF	shift 18
+	WHILE	shift 17
+
+	c	goto 16
+	csh	goto 44
+
+	.	error
+
+
+state 26:
+
+	e : num .  (reduce by rule 35)
+
+	SEMICOLON	reduce by rule 35
+	RPAREN	reduce by rule 35
+	PLUS	reduce by rule 35
+	SUB	reduce by rule 35
+	TIMES	reduce by rule 35
+	DIV	reduce by rule 35
+	MOD	reduce by rule 35
+	EQ	reduce by rule 35
+	NE	reduce by rule 35
+	LT	reduce by rule 35
+	LE	reduce by rule 35
+	GT	reduce by rule 35
+	GE	reduce by rule 35
+	AND	reduce by rule 35
+	OR	reduce by rule 35
+	THEN	reduce by rule 35
+	DO	reduce by rule 35
+
+
+	.	error
+
+
+state 27:
+
+	c : WHILE e . DO cs ENDWH 
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	shift 46
+	DO	shift 45
+
+
+	.	error
+
+
+state 28:
+
+	e : v .  (reduce by rule 34)
+
+	SEMICOLON	reduce by rule 34
+	RPAREN	reduce by rule 34
+	PLUS	reduce by rule 34
+	SUB	reduce by rule 34
+	TIMES	reduce by rule 34
+	DIV	reduce by rule 34
+	MOD	reduce by rule 34
+	EQ	reduce by rule 34
+	NE	reduce by rule 34
+	LT	reduce by rule 34
+	LE	reduce by rule 34
+	GT	reduce by rule 34
+	GE	reduce by rule 34
+	AND	reduce by rule 34
+	OR	reduce by rule 34
+	THEN	reduce by rule 34
+	DO	reduce by rule 34
+
+
+	.	error
+
+
+state 29:
+
+	e : NEG . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 59
+	num	goto 26
+
+	.	error
+
+
+state 30:
+
+	e : NOT . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 60
+	num	goto 26
+
+	.	error
+
+
+state 31:
+
+	e : FALSE .  (reduce by rule 37)
+
+	SEMICOLON	reduce by rule 37
+	RPAREN	reduce by rule 37
+	PLUS	reduce by rule 37
+	SUB	reduce by rule 37
+	TIMES	reduce by rule 37
+	DIV	reduce by rule 37
+	MOD	reduce by rule 37
+	EQ	reduce by rule 37
+	NE	reduce by rule 37
+	LT	reduce by rule 37
+	LE	reduce by rule 37
+	GT	reduce by rule 37
+	GE	reduce by rule 37
+	AND	reduce by rule 37
+	OR	reduce by rule 37
+	THEN	reduce by rule 37
+	DO	reduce by rule 37
+
+
+	.	error
+
+
+state 32:
+
+	e : TRUE .  (reduce by rule 36)
+
+	SEMICOLON	reduce by rule 36
+	RPAREN	reduce by rule 36
+	PLUS	reduce by rule 36
+	SUB	reduce by rule 36
+	TIMES	reduce by rule 36
+	DIV	reduce by rule 36
+	MOD	reduce by rule 36
+	EQ	reduce by rule 36
+	NE	reduce by rule 36
+	LT	reduce by rule 36
+	LE	reduce by rule 36
+	GT	reduce by rule 36
+	GE	reduce by rule 36
+	AND	reduce by rule 36
+	OR	reduce by rule 36
+	THEN	reduce by rule 36
+	DO	reduce by rule 36
+
+
+	.	error
+
+
+state 33:
+
+	num : PLUS . NUM 
+
+	NUM	shift 61
+
+
+	.	error
+
+
+state 34:
+
+	e : LPAREN . e RPAREN 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 62
+	num	goto 26
+
+	.	error
+
+
+state 35:
+
+	num : NUM .  (reduce by rule 40)
+
+	SEMICOLON	reduce by rule 40
+	RPAREN	reduce by rule 40
+	PLUS	reduce by rule 40
+	SUB	reduce by rule 40
+	TIMES	reduce by rule 40
+	DIV	reduce by rule 40
+	MOD	reduce by rule 40
+	EQ	reduce by rule 40
+	NE	reduce by rule 40
+	LT	reduce by rule 40
+	LE	reduce by rule 40
+	GT	reduce by rule 40
+	GE	reduce by rule 40
+	AND	reduce by rule 40
+	OR	reduce by rule 40
+	THEN	reduce by rule 40
+	DO	reduce by rule 40
+
+
+	.	error
+
+
+state 36:
+
+	c : IF e . THEN cs ELSE cs ENDIF 
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	shift 46
+	THEN	shift 63
+
+
+	.	error
+
+
+state 37:
+
+	c : WRITE e .  (reduce by rule 15)
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 15
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	shift 46
+
+
+	.	error
+
+
+state 38:
+
+	c : READ ID .  (reduce by rule 14)
+
+	SEMICOLON	reduce by rule 14
+
+
+	.	error
+
+
+state 39:
+
+	c : ID ASSIGN . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 64
+	num	goto 26
+
+	.	error
+
+
+state 40:
+
+	vl : v COMMA vl .  (reduce by rule 8)
+
+	COLON	reduce by rule 8
+
+
+	.	error
+
+
+state 41:
+
+	d : V vl COLON t . SEMICOLON 
+
+	SEMICOLON	shift 65
+
+
+	.	error
+
+
+state 42:
+
+	t : BOOL .  (reduce by rule 7)
+
+	SEMICOLON	reduce by rule 7
+
+
+	.	error
+
+
+state 43:
+
+	t : INT .  (reduce by rule 6)
+
+	SEMICOLON	reduce by rule 6
+
+
+	.	error
+
+
+state 44:
+
+	csh : c SEMICOLON csh .  (reduce by rule 11)
+
+	CRPAREN	reduce by rule 11
+
+
+	.	error
+
+
+state 45:
+
+	c : WHILE e DO . cs ENDWH 
+
+	CLPAREN	shift 11
+
+	cs	goto 66
+
+	.	error
+
+
+state 46:
+
+	e : e OR . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 67
+	num	goto 26
+
+	.	error
+
+
+state 47:
+
+	e : e AND . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 68
+	num	goto 26
+
+	.	error
+
+
+state 48:
+
+	e : e GE . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 69
+	num	goto 26
+
+	.	error
+
+
+state 49:
+
+	e : e GT . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 70
+	num	goto 26
+
+	.	error
+
+
+state 50:
+
+	e : e LE . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 71
+	num	goto 26
+
+	.	error
+
+
+state 51:
+
+	e : e LT . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 72
+	num	goto 26
+
+	.	error
+
+
+state 52:
+
+	e : e NE . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 73
+	num	goto 26
+
+	.	error
+
+
+state 53:
+
+	e : e EQ . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 74
+	num	goto 26
+
+	.	error
+
+
+state 54:
+
+	e : e MOD . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 75
+	num	goto 26
+
+	.	error
+
+
+state 55:
+
+	e : e DIV . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 76
+	num	goto 26
+
+	.	error
+
+
+state 56:
+
+	e : e TIMES . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 77
+	num	goto 26
+
+	.	error
+
+
+state 57:
+
+	e : e SUB . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 78
+	num	goto 26
+
+	.	error
+
+
+state 58:
+
+	e : e PLUS . e 
+
+	ID	shift 14
+	NUM	shift 35
+	LPAREN	shift 34
+	PLUS	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	NEG	shift 29
+
+	v	goto 28
+	e	goto 79
+	num	goto 26
+
+	.	error
+
+
+state 59:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : NEG e .  (reduce by rule 23)
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 23
+	RPAREN	reduce by rule 23
+	PLUS	reduce by rule 23
+	SUB	reduce by rule 23
+	TIMES	reduce by rule 23
+	DIV	reduce by rule 23
+	MOD	reduce by rule 23
+	EQ	reduce by rule 23
+	NE	reduce by rule 23
+	LT	reduce by rule 23
+	LE	reduce by rule 23
+	GT	reduce by rule 23
+	GE	reduce by rule 23
+	AND	reduce by rule 23
+	OR	reduce by rule 23
+	THEN	reduce by rule 23
+	DO	reduce by rule 23
+
+
+	.	error
+
+
+state 60:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : NOT e .  (reduce by rule 26)
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 26
+	RPAREN	reduce by rule 26
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	reduce by rule 26
+	NE	reduce by rule 26
+	LT	reduce by rule 26
+	LE	reduce by rule 26
+	GT	reduce by rule 26
+	GE	reduce by rule 26
+	AND	reduce by rule 26
+	OR	reduce by rule 26
+	THEN	reduce by rule 26
+	DO	reduce by rule 26
+
+
+	.	error
+
+
+state 61:
+
+	num : PLUS NUM .  (reduce by rule 39)
+
+	SEMICOLON	reduce by rule 39
+	RPAREN	reduce by rule 39
+	PLUS	reduce by rule 39
+	SUB	reduce by rule 39
+	TIMES	reduce by rule 39
+	DIV	reduce by rule 39
+	MOD	reduce by rule 39
+	EQ	reduce by rule 39
+	NE	reduce by rule 39
+	LT	reduce by rule 39
+	LE	reduce by rule 39
+	GT	reduce by rule 39
+	GE	reduce by rule 39
+	AND	reduce by rule 39
+	OR	reduce by rule 39
+	THEN	reduce by rule 39
+	DO	reduce by rule 39
+
+
+	.	error
+
+
+state 62:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : LPAREN e . RPAREN 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	RPAREN	shift 80
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	shift 46
+
+
+	.	error
+
+
+state 63:
+
+	c : IF e THEN . cs ELSE cs ENDIF 
+
+	CLPAREN	shift 11
+
+	cs	goto 81
+
+	.	error
+
+
+state 64:
+
+	c : ID ASSIGN e .  (reduce by rule 13)
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 13
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	shift 46
+
+
+	.	error
+
+
+state 65:
+
+	d : V vl COLON t SEMICOLON .  (reduce by rule 5)
+
+	CLPAREN	reduce by rule 5
+	V	reduce by rule 5
+
+
+	.	error
+
+
+state 66:
+
+	c : WHILE e DO cs . ENDWH 
+
+	ENDWH	shift 82
+
+
+	.	error
+
+
+state 67:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e OR e .  (reduce by rule 24)
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 24
+	RPAREN	reduce by rule 24
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	shift 47
+	OR	reduce by rule 24
+	THEN	reduce by rule 24
+	DO	reduce by rule 24
+
+
+	.	error
+
+
+state 68:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e AND e .  (reduce by rule 25)
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 25
+	RPAREN	reduce by rule 25
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 25
+	OR	reduce by rule 25
+	THEN	reduce by rule 25
+	DO	reduce by rule 25
+
+
+	.	error
+
+
+state 69:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e GE e .  (reduce by rule 31)
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 31
+	RPAREN	reduce by rule 31
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 31
+	OR	reduce by rule 31
+	THEN	reduce by rule 31
+	DO	reduce by rule 31
+
+
+	.	error
+
+
+state 70:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e GT e .  (reduce by rule 30)
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 30
+	RPAREN	reduce by rule 30
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 30
+	OR	reduce by rule 30
+	THEN	reduce by rule 30
+	DO	reduce by rule 30
+
+
+	.	error
+
+
+state 71:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e LE e .  (reduce by rule 29)
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 29
+	RPAREN	reduce by rule 29
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 29
+	OR	reduce by rule 29
+	THEN	reduce by rule 29
+	DO	reduce by rule 29
+
+
+	.	error
+
+
+state 72:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e LT e .  (reduce by rule 28)
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 28
+	RPAREN	reduce by rule 28
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 28
+	OR	reduce by rule 28
+	THEN	reduce by rule 28
+	DO	reduce by rule 28
+
+
+	.	error
+
+
+state 73:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+	e : e NE e .  (reduce by rule 33)
+
+	SEMICOLON	reduce by rule 33
+	RPAREN	reduce by rule 33
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 33
+	OR	reduce by rule 33
+	THEN	reduce by rule 33
+	DO	reduce by rule 33
+
+
+	.	error
+
+
+state 74:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e EQ e .  (reduce by rule 32)
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 32
+	RPAREN	reduce by rule 32
+	PLUS	shift 58
+	SUB	shift 57
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	shift 53
+	NE	shift 52
+	LT	shift 51
+	LE	shift 50
+	GT	shift 49
+	GE	shift 48
+	AND	reduce by rule 32
+	OR	reduce by rule 32
+	THEN	reduce by rule 32
+	DO	reduce by rule 32
+
+
+	.	error
+
+
+state 75:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e MOD e .  (reduce by rule 22)
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 22
+	RPAREN	reduce by rule 22
+	PLUS	reduce by rule 22
+	SUB	reduce by rule 22
+	TIMES	reduce by rule 22
+	DIV	reduce by rule 22
+	MOD	reduce by rule 22
+	EQ	reduce by rule 22
+	NE	reduce by rule 22
+	LT	reduce by rule 22
+	LE	reduce by rule 22
+	GT	reduce by rule 22
+	GE	reduce by rule 22
+	AND	reduce by rule 22
+	OR	reduce by rule 22
+	THEN	reduce by rule 22
+	DO	reduce by rule 22
+
+
+	.	error
+
+
+state 76:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e DIV e .  (reduce by rule 21)
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 21
+	RPAREN	reduce by rule 21
+	PLUS	reduce by rule 21
+	SUB	reduce by rule 21
+	TIMES	reduce by rule 21
+	DIV	reduce by rule 21
+	MOD	reduce by rule 21
+	EQ	reduce by rule 21
+	NE	reduce by rule 21
+	LT	reduce by rule 21
+	LE	reduce by rule 21
+	GT	reduce by rule 21
+	GE	reduce by rule 21
+	AND	reduce by rule 21
+	OR	reduce by rule 21
+	THEN	reduce by rule 21
+	DO	reduce by rule 21
+
+
+	.	error
+
+
+state 77:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e TIMES e .  (reduce by rule 20)
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 20
+	RPAREN	reduce by rule 20
+	PLUS	reduce by rule 20
+	SUB	reduce by rule 20
+	TIMES	reduce by rule 20
+	DIV	reduce by rule 20
+	MOD	reduce by rule 20
+	EQ	reduce by rule 20
+	NE	reduce by rule 20
+	LT	reduce by rule 20
+	LE	reduce by rule 20
+	GT	reduce by rule 20
+	GE	reduce by rule 20
+	AND	reduce by rule 20
+	OR	reduce by rule 20
+	THEN	reduce by rule 20
+	DO	reduce by rule 20
+
+
+	.	error
+
+
+state 78:
+
+	e : e . PLUS e 
+	e : e . SUB e 
+	e : e SUB e .  (reduce by rule 19)
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 19
+	RPAREN	reduce by rule 19
+	PLUS	reduce by rule 19
+	SUB	reduce by rule 19
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	reduce by rule 19
+	NE	reduce by rule 19
+	LT	reduce by rule 19
+	LE	reduce by rule 19
+	GT	reduce by rule 19
+	GE	reduce by rule 19
+	AND	reduce by rule 19
+	OR	reduce by rule 19
+	THEN	reduce by rule 19
+	DO	reduce by rule 19
+
+
+	.	error
+
+
+state 79:
+
+	e : e . PLUS e 
+	e : e PLUS e .  (reduce by rule 18)
+	e : e . SUB e 
+	e : e . TIMES e 
+	e : e . DIV e 
+	e : e . MOD e 
+	e : e . OR e 
+	e : e . AND e 
+	e : e . LT e 
+	e : e . LE e 
+	e : e . GT e 
+	e : e . GE e 
+	e : e . EQ e 
+	e : e . NE e 
+
+	SEMICOLON	reduce by rule 18
+	RPAREN	reduce by rule 18
+	PLUS	reduce by rule 18
+	SUB	reduce by rule 18
+	TIMES	shift 56
+	DIV	shift 55
+	MOD	shift 54
+	EQ	reduce by rule 18
+	NE	reduce by rule 18
+	LT	reduce by rule 18
+	LE	reduce by rule 18
+	GT	reduce by rule 18
+	GE	reduce by rule 18
+	AND	reduce by rule 18
+	OR	reduce by rule 18
+	THEN	reduce by rule 18
+	DO	reduce by rule 18
+
+
+	.	error
+
+
+state 80:
+
+	e : LPAREN e RPAREN .  (reduce by rule 27)
+
+	SEMICOLON	reduce by rule 27
+	RPAREN	reduce by rule 27
+	PLUS	reduce by rule 27
+	SUB	reduce by rule 27
+	TIMES	reduce by rule 27
+	DIV	reduce by rule 27
+	MOD	reduce by rule 27
+	EQ	reduce by rule 27
+	NE	reduce by rule 27
+	LT	reduce by rule 27
+	LE	reduce by rule 27
+	GT	reduce by rule 27
+	GE	reduce by rule 27
+	AND	reduce by rule 27
+	OR	reduce by rule 27
+	THEN	reduce by rule 27
+	DO	reduce by rule 27
+
+
+	.	error
+
+
+state 81:
+
+	c : IF e THEN cs . ELSE cs ENDIF 
+
+	ELSE	shift 83
+
+
+	.	error
+
+
+state 82:
+
+	c : WHILE e DO cs ENDWH .  (reduce by rule 17)
+
+	SEMICOLON	reduce by rule 17
+
+
+	.	error
+
+
+state 83:
+
+	c : IF e THEN cs ELSE . cs ENDIF 
+
+	CLPAREN	shift 11
+
+	cs	goto 84
+
+	.	error
+
+
+state 84:
+
+	c : IF e THEN cs ELSE cs . ENDIF 
+
+	ENDIF	shift 85
+
+
+	.	error
+
+
+state 85:
+
+	c : IF e THEN cs ELSE cs ENDIF .  (reduce by rule 16)
+
+	SEMICOLON	reduce by rule 16
+
+
+	.	error
+
+
+state 86:
+
+
+	EOF	accept
+
+
+	.	error
+
+516 of 767 action table entries left after compaction
+80 goto table entries

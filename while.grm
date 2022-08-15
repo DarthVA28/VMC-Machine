@@ -1,0 +1,139 @@
+open AST
+
+exception TypeMismatchException
+exception IDException
+
+val env : (string, string) HashTable.hash_table = HashTable.mkTable(HashString.hashString, op=)(50, Domain)
+
+fun typeLookup (var : string) =
+case HashTable.find env var of
+SOME v => v
+| NONE => raise Fail "ERROR: Identifier not declared before use."
+
+fun envAdd (vl : exp list, t: types) =
+  if (vl = []) then true
+  else 
+    case (t, hd(vl)) of 
+    (INT, VAR x)      => (let val x = HashTable.insert env (x,"int") in 
+      envAdd(tl(vl),t)
+      end
+    )
+    | (BOOL, VAR x)   => (let val y = HashTable.insert env (x,"bool") in 
+      envAdd(tl(vl),t)
+      end
+    )
+    | _               => false
+
+fun checkIE(e: exp) = 
+  case e of
+	    INTEGER i         => true
+      | VAR x           => (typeLookup(x)="int")
+      | PLUS(e1,e2)     => (checkIE(e1) andalso checkIE(e2))
+      | MINUS(e1,e2)    => (checkIE(e1) andalso checkIE(e2))
+      | TIMES(e1,e2)    => (checkIE(e1) andalso checkIE(e2))
+      | DIV(e1,e2)      => (checkIE(e1) andalso checkIE(e2))
+      | MOD(e1,e2)      => (checkIE(e1) andalso checkIE(e2))
+      | NEG(e)          => (checkIE(e))
+      | _               => false
+
+fun checkBE(e: exp) = 
+  case e of
+	    TT(true)          => true
+      | FF(false)       => true
+      | VAR x           => (typeLookup(x)="bool")
+      | OR(e1,e2)       => (checkBE(e1) andalso checkBE(e2))
+      | AND(e1,e2)      => (checkBE(e1) andalso checkBE(e2))
+      | NOT(e)          => (checkBE(e))
+      | LT(e1,e2)       => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | LEQ(e1,e2)      => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | EQ(e1,e2)       => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | GT(e1,e2)       => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | GEQ(e1,e2)      => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | NEQ(e1,e2)      => ((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))
+      | _               => false
+
+%%
+%name While
+%term
+    EOF 
+  | ID of string
+  | NUM of int | INT | BOOL | PROGRAM
+  | COMMA | COLON | DCOLON | SEMICOLON | LPAREN | RPAREN | CLPAREN | CRPAREN 
+  | PLUS | SUB | TIMES | DIV | MOD | EQ | NE | LT | LE | GT | GE
+  | TRUE of bool | FALSE of bool
+  | AND | OR | NOT | ASSIGN
+  | READ | WRITE | IF | THEN | ELSE | ENDIF | WHILE | DO | ENDWH 
+  | NEG | V
+
+%nonterm tree of tree | pgm of pgm | block of blk | ds of dec list | cs of cmd list
+                | c of cmd | csh of cmd list 
+                | d of dec | vl of exp list | v of exp | t of types | e of exp
+                | num of exp
+
+%pos int
+%eop EOF 
+%noshift EOF
+
+%left OR
+%left AND 
+%right EQ NE LT LE GT GE
+%left NOT
+%left SUB PLUS
+%left TIMES DIV MOD
+%right NEG
+
+%nodefault
+%prefer NEG THEN ELSE LPAREN
+%keyword WHILE DO ENDWH V IF THEN ELSE ENDIF  
+%start tree
+
+%verbose
+%arg (fileName) : string
+
+%%
+tree          : pgm (AST(pgm))
+pgm           : PROGRAM ID DCOLON block (PROG(block))
+block         : ds cs (BLK(ds,cs))
+ds            : d ds (d::ds)
+              | (nil)
+d             : V vl COLON t SEMICOLON (if (envAdd(vl,t)=true) then print "" else raise IDException; DEC(vl,t))
+t             : INT (INT)
+              | BOOL (BOOL)
+vl            : v COMMA vl (v::vl)
+              | v (v::nil)
+cs            : CLPAREN csh CRPAREN (csh)
+csh           : c SEMICOLON csh (c::csh)
+              | (nil)
+c             : ID ASSIGN e (if (typeLookup(ID)="int") then if not(checkIE(e)) then raise TypeMismatchException else print ""
+                else if not(checkBE(e)) then raise TypeMismatchException else print "";
+                SET(ID,e))
+              | READ ID (READ(ID))
+              | WRITE e (WRITE(e))
+              | IF e THEN cs ELSE cs ENDIF (if not(checkBE(e)) then raise TypeMismatchException else print ""; 
+                ITE(e,cs1,cs2))
+              | WHILE e DO cs ENDWH (WH(e,cs))
+e             : e PLUS e (if not(checkIE(e1) andalso checkIE(e2)) then raise TypeMismatchException else print ""; PLUS(e1,e2))
+              | e SUB e (if not(checkIE(e1) andalso checkIE(e2)) then raise TypeMismatchException else print ""; MINUS(e1,e2))
+              | e TIMES e (if not(checkIE(e1) andalso checkIE(e2)) then raise TypeMismatchException else print ""; TIMES(e1,e2)) 
+              | e DIV e (if not(checkIE(e1) andalso checkIE(e2)) then raise TypeMismatchException else print ""; DIV(e1,e2))
+              | e MOD e (if not(checkIE(e1) andalso checkIE(e2)) then raise TypeMismatchException else print ""; MOD(e1,e2))
+              | NEG e (if not(checkIE(e)) then raise TypeMismatchException else print ""; NEG(e))
+              | e OR e (if not(checkBE(e1) andalso checkBE(e2)) then raise TypeMismatchException else print ""; OR(e1,e2))
+              | e AND e (if not(checkBE(e1) andalso checkBE(e2)) then raise TypeMismatchException else print ""; AND(e1,e2))
+              | NOT e (if not(checkBE(e)) then raise TypeMismatchException else print ""; NOT(e))
+              | LPAREN e RPAREN (e)
+              | e LT e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; LT(e1,e2))
+              | e LE e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; LEQ(e1,e2))
+              | e GT e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; GT(e1,e2))
+              | e GE e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; GEQ(e1,e2))
+              | e EQ e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; EQ(e1,e2))
+              | e NE e (if not(((checkBE(e1) andalso checkBE(e2)) orelse (checkIE(e1) andalso checkIE(e2)))) then raise TypeMismatchException else print ""; NEQ(e1,e2))
+              | v (v)
+              | num (num)  
+              | TRUE (TT(true))
+              | FALSE (FF(false))             
+                
+v             : ID (VAR(ID))
+
+num           : PLUS NUM (INTEGER(NUM))
+              | NUM  (INTEGER(NUM))

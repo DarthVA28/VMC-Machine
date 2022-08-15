@@ -1,0 +1,17 @@
+Library
+	structure While
+    structure AST
+    (* structure FunStack
+    structure Vmc *)
+is
+    while_ast.sml
+    (* stack.sml
+    vmc_machine.sml *)
+    while.lex 
+    while.grm:MLYacc 
+    glue.sml
+    compiler.sml 
+    $/basis.cm 
+    $/smlnj-lib.cm
+    $/ml-yacc-lib.cm 
+    $smlnj/compiler/compiler.cm 

@@ -1,0 +1,12 @@
+program test ::
+    var A, B: int;
+    var P: bool;
+{
+    read A;
+    if (A=1) then {
+        B := 10;
+    } else {
+        B := 69;
+    } endif;
+    write B;
+}
