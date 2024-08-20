@@ -1,6 +1,5 @@
-# **README** 
-## **Overview**
-We design a **VMC Machine**, which is a virtual machine with a value stack **V**, a memory **M** and a control stack **C**. For the execution of the AST developed by the compiler, we first convert it into a bracket-free postfix expression, and then operate on it using the operational semantics as defined in a later section. The evaluation is considered complete when the control stack is empty (Note that if the program does not terminate this situation will not arise).
+# **VMC Machine** 
+This project implements a **VMC Machine**, which is a virtual machine with a value stack **V**, a memory **M** and a control stack **C**. For the execution of the AST developed by the compiler, we first convert it into a bracket-free postfix expression, and then operate on it using the operational semantics as defined in a later section. The evaluation is considered complete when the control stack is empty (Note that if the program does not terminate this situation will not arise).
 
 The files as a part of this project are: 
 - vmc_machine.sml (Implementation of the VMC Machine)
