@@ -67,7 +67,7 @@ The control stack is: READ A 2 =  B  10 SET  B  32 SET ITE B WRITE
 
 ---
 ## **Operational Semantics**
-The operational semantics of the While programming language have been implemented as specified in the Assignment 4. For reference, these have been provided below:
+The operational semantics of the While programming language have been provided below:
 ```
 Rule 
 1  <V, M, m.C> −→ <m.V, M, C>
@@ -88,31 +88,13 @@ Rule
 16 <1.c.b.V, M, C> −→ <V, M, c.b.c.WH.C>
 ```
 
-
-## **Design and Implementation Decisions**
 ### **Type Checking**
 Type checking has been implemented for both expressions and identifiers. The implementation uses the inbuilt structure "HashTable" from SMJ/NJ. An expression/identifier having incorrect type raises an error ```TypeMismatchException```. 
 
 Further, we also check for declaration before use using the same symbol table - if any identifier has not been declared in the header of the program, we raise an error- 
 > "ERROR: Identifier not declared before use."
-### **Stacks**
-We have added the following functions to the signature of the stack: (Nothing has been removed)
-```
-val append : ('a stack * 'a stack) -> 'a stack
-val substack : ('a stack * int * int) -> 'a stack
-val findMIndex : (''a stack * ''a * ''a) -> int
-```
-This has been done as some of these functions were needed during the implementation of the operational semantics of the While language in the **VMC Machine**. Their functionality is clear from their names and signatures. 
 
-Although some of these can be implemented as combinations of the functions already defined in the stack, I preferred to add these to the signature of the stack for the sake of ease of implementation and making the code shorter and more readable.
-
-### **VMC Machine - ToString() to config()**
-We have modified the name of the function ```ToString()``` of the VMC Machine to ```config()```. This is because ToString is an overloaded function name and was causing issues related to type-mismatch during compilation of the ```vmc_machine.sml``` file. 
-
-The new choice of the name is because it is essentially outputting the current configuration of the VMC Machine.
-
-## **Acknowledgements**
-I referred to the following sources for the completion of this peoject: 
+## **References**
 - [Modern Compiler Design in Standard ML](https://www.cs.princeton.edu/~appel/modern/ml/) - Andrew W. Appel
 - [SML/NJ Official Documentation](https://www.smlnj.org/doc/smlnj-lib/Util/str-HashTable.html)
 - [COL226 Hyper Notes](https://www.cse.iitd.ac.in/~sak/courses/pl/pl.pdf), Section 4.6 (WHILE Language EBNF)
